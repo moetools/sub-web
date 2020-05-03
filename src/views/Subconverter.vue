@@ -237,6 +237,7 @@ export default {
         clientTypes: {
           V2Ray: "v2ray",
           Clash: "clash",
+          ClashWindows: "clash&new_name=true",
           ClashR: "clashr",
           Surge2: "surge&ver=2",
           Surge3: "surge&ver=3",
