@@ -252,6 +252,7 @@ export default {
         },
         backendOptions: [
             { value: "https://api.moetools.net/sub/sub?" },
+            { value: "https://sub.guguwebapi.xyz/sub?" },
             { value: "http://127.0.0.1:25500/sub?" }
         ],
 
