@@ -76,7 +76,7 @@
                   <el-row type="flex">
                     <el-col>
                       <el-checkbox v-model="form.nodeList" label="输出为 Node List" border></el-checkbox>
-		      <el-checkbox v-model="form.new_name" label="Clash新字段" border></el-checkbox>
+                      <el-checkbox v-model="form.new_name" label="Clash新字段" border></el-checkbox>
                     </el-col>
                     <el-popover placement="bottom" v-model="form.extraset">
                       <el-row>
@@ -446,7 +446,7 @@ export default {
         }
         if (this.form.tpl.clash.doh === true) {
           this.customSubUrl += "&clash.doh=true";
-	}
+    }
         if (this.form.clientType === "clash") {
           this.customSubUrl += "&new_name=" + this.form.new_name.toString();
         }
