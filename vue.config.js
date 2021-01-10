@@ -5,7 +5,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  publicPath: "/subweb/",
+  publicPath: process.env.BASE_URL,
   productionSourceMap: false,
   css: {
     sourceMap: false,

@@ -10,7 +10,7 @@
             <div style="display: inline-block; position:absolute; right: 20px">{{ backendVersion }}</div>
           </div>
           <el-container>
-            <el-form :model="form" label-width="120px" label-position="left" style="width: 100%">
+            <el-form :model="form" label-width="80px" label-position="left" style="width: 100%">
               <el-form-item label="模式设置:">
                 <el-radio v-model="advanced" label="1">基础模式</el-radio>
                 <el-radio v-model="advanced" label="2">进阶模式</el-radio>
@@ -20,7 +20,8 @@
                   v-model="form.sourceSubUrl"
                   type="textarea"
                   rows="3"
-                  placeholder="支持订阅或ss/ssr/vmess单链接。多个链接请每行一个或用 | 分隔"
+                  placeholder="支持订阅或ss/ssr/vmess链接，多个链接每行一个或用 | 分隔"
+                  @blur="saveSubUrl"
                 />
               </el-form-item>
               <el-form-item label="客户端:">
@@ -63,10 +64,10 @@
                     <el-button slot="append" @click="gotoRemoteConfig" icon="el-icon-link">配置示例</el-button>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="IncludeRemarks:">
+                <el-form-item label="Include:">
                   <el-input v-model="form.includeRemarks" placeholder="（可选）节点名包含的关键字，支持正则" />
                 </el-form-item>
-                <el-form-item label="ExcludeRemarks:">
+                <el-form-item label="Exclude:">
                   <el-input v-model="form.excludeRemarks" placeholder="（可选）节点名不包含的关键字，支持正则" />
                 </el-form-item>
                 <el-form-item label="FileName:">
@@ -83,7 +84,7 @@
                         <el-checkbox v-model="form.emoji" label="Emoji"></el-checkbox>
                       </el-row>
                       <el-row>
-                        <el-checkbox v-model="form.udp" label="启用 UDP"></el-checkbox>
+                        <el-checkbox v-model="form.udp" @change="needUdp = true" label="启用 UDP"></el-checkbox>
                       </el-row>
                       <el-row>
                         <el-checkbox v-model="form.appendType" label="节点类型"></el-checkbox>
@@ -99,14 +100,14 @@
                       </el-row>
                       <el-button slot="reference">更多选项</el-button>
                     </el-popover>
-                    <el-popover placement="bottom" style="margin-left: 20px">
+                    <el-popover placement="bottom" style="margin-left: 10px">
                       <el-row>
                         <el-checkbox v-model="form.tpl.surge.doh" label="Surge.DoH"></el-checkbox>
                       </el-row>
                       <el-row>
                         <el-checkbox v-model="form.tpl.clash.doh" label="Clash.DoH"></el-checkbox>
                       </el-row>
-                      <el-button slot="reference">模板定制功能</el-button>
+                      <el-button slot="reference">定制功能</el-button>
                     </el-popover>
                   </el-row>
                 </el-form-item>
@@ -129,7 +130,7 @@
                   >复制</el-button>
                 </el-input>
               </el-form-item>
-              <el-form-item label="订阅短链接:" style="display: none;">
+              <el-form-item label="订阅短链:">
                 <el-input class="copy-content" disabled v-model="curtomShortSubUrl">
                   <el-button
                     slot="append"
@@ -218,14 +219,13 @@
 </template>
 
 <script>
-const project = "https://github.com/CareyWang/sub-web";
-const remoteConfigSample =
-  "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Mini_NoAuto.ini";
-const gayhubRelease = "https://github.com/tindy2013/subconverter/releases";
-const defaultBackend = "https://api.moetools.net/sub/sub?";
-const shortUrlBackend = "https://api.suo.yt/short";
-const configUploadBackend = "https://api.wcc.best/config/upload";
-const tgBotLink = "https://t.me/CareyWong_bot";
+const project = process.env.VUE_APP_PROJECT
+const remoteConfigSample = process.env.VUE_APP_SUBCONVERTER_REMOTE_CONFIG
+const gayhubRelease = process.env.VUE_APP_BACKEND_RELEASE
+const defaultBackend = process.env.VUE_APP_SUBCONVERTER_DEFAULT_BACKEND + '/sub?'
+const shortUrlBackend = process.env.VUE_APP_MYURLS_DEFAULT_BACKEND + '/short'
+const configUploadBackend = process.env.VUE_APP_CONFIG_UPLOAD_BACKEND + '/config/upload'
+const tgBotLink = process.env.VUE_APP_BOT_LINK
 
 export default {
   data() {
@@ -248,6 +248,7 @@ export default {
           QuantumultX: "quanx",
           Surfboard: "surfboard",
           Loon: "loon",
+          SSAndroid: "sssub",
           ss: "ss",
           ssr: "ssr",
           ssd: "ssd"
@@ -330,12 +331,19 @@ export default {
       uploadConfig: "",
       uploadPassword: "",
       myBot: tgBotLink,
-      sampleConfig: remoteConfigSample
+      sampleConfig: remoteConfigSample,
+
+      needUdp: false, // 是否需要添加 udp 参数
     };
   },
   created() {
     document.title = "Subscription Converter";
     this.isPC = this.$getOS().isPc;
+
+    // 获取 url cache
+    if (process.env.VUE_APP_USE_STORAGE === 'true') {
+      this.form.sourceSubUrl = this.getLocalStorageItem('sourceSubUrl')
+    }
   },
   mounted() {
     this.form.clientType = "clash";
@@ -430,8 +438,6 @@ export default {
           this.form.emoji.toString() +
           "&list=" +
           this.form.nodeList.toString() +
-          "&udp=" +
-          this.form.udp.toString() +
           "&tfo=" +
           this.form.tfo.toString() +
           "&scv=" +
@@ -441,13 +447,19 @@ export default {
           "&sort=" +
           this.form.sort.toString();
 
+        if (this.needUdp) {
+          this.customSubUrl += "&udp=" + this.form.udp.toString()
+        }
+
         if (this.form.tpl.surge.doh === true) {
           this.customSubUrl += "&surge.doh=true";
         }
-        if (this.form.tpl.clash.doh === true) {
-          this.customSubUrl += "&clash.doh=true";
-    }
+
         if (this.form.clientType === "clash") {
+          if (this.form.tpl.clash.doh === true) {
+            this.customSubUrl += "&clash.doh=true";
+          }
+
           this.customSubUrl += "&new_name=" + this.form.new_name.toString();
         }
       }
@@ -567,7 +579,40 @@ export default {
           this.backendVersion = res.data.replace(/backend\n$/gm, "");
           this.backendVersion = this.backendVersion.replace("subconverter", "");
         });
+    },
+    saveSubUrl() {
+      if (this.form.sourceSubUrl !== '') {
+        this.setLocalStorageItem('sourceSubUrl', this.form.sourceSubUrl)
+      }
+    },
+    getLocalStorageItem(itemKey) {
+      const now = +new Date()
+      let ls = localStorage.getItem(itemKey)
+
+      let itemValue = ''
+      if (ls !== null) {
+        let data = JSON.parse(ls)
+        if (data.expire > now) {
+          itemValue = data.value
+        } else {
+          localStorage.removeItem(itemKey)
+        }
+      }
+
+      return itemValue
+    },
+    setLocalStorageItem(itemKey, itemValue) {
+      const ttl = process.env.VUE_APP_CACHE_TTL
+      const now = +new Date()
+
+      let data = {
+        setTime: now,
+        ttl: parseInt(ttl),
+        expire: now + ttl * 1000,
+        value: itemValue
+      }
+      localStorage.setItem(itemKey, JSON.stringify(data))
     }
-  }
+  },
 };
 </script>
