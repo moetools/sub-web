@@ -283,11 +283,7 @@ export default {
           {
             label: "预置规则",
             options: [
-              {
-                label: "MoCloudPlus",
-                value:
-                  "https://script.moetools.net/rule/MoCloudPlus.ini"
-              }
+
             ]
           }
         ]
