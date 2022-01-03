@@ -36,7 +36,7 @@
                     style="width: 100%"
                     v-model="form.customBackend"
                     :fetch-suggestions="backendSearch"
-                    placeholder="https://api.moetools.net/sub/sub?"
+                    placeholder="https://subapi.up.railway.app/sub?"
                   >
                     <el-button slot="append" @click="gotoGayhub" icon="el-icon-link">Github</el-button>
                   </el-autocomplete>
@@ -254,8 +254,9 @@ export default {
           ssd: "ssd"
         },
         backendOptions: [
+            { value: "https://subapi.up.railway.app/sub?" },
             { value: "https://api.moetools.net/sub/sub?" },
-            { value: "https://sub.guguwebapi.xyz/sub?" },
+            { value: "https://sub.xeton.dev/sub?" },
             { value: "http://127.0.0.1:25500/sub?" }
         ],
 
