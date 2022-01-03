@@ -280,12 +280,6 @@ export default {
                   "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_BackCN.ini"
               }
             ]
-          },
-          {
-            label: "预置规则",
-            options: [
-
-            ]
           }
         ]
       },
