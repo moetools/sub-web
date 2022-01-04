@@ -32,3 +32,9 @@ jobs:
       with:
         name: dist
         path: dist/
+
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@4.1.8
+      with:
+        branch: dist
+        folder: dist
