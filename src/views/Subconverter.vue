@@ -46,7 +46,7 @@
                     v-model="form.remoteConfig"
                     allow-create
                     filterable
-                    placeholder="默认使用精简规则"
+                    placeholder="默认使用 基础规则（推荐）"
                     style="width: 100%"
                   >
                     <el-option-group
@@ -84,6 +84,9 @@
                         <el-checkbox v-model="form.emoji" label="Emoji"></el-checkbox>
                       </el-row>
                       <el-row>
+                        <el-checkbox v-model="form.scv" label="跳过证书验证"></el-checkbox>
+                      </el-row>
+                      <el-row>
                         <el-checkbox v-model="form.udp" @change="needUdp = true" label="启用 UDP"></el-checkbox>
                       </el-row>
                       <el-row>
@@ -91,9 +94,6 @@
                       </el-row>
                       <el-row>
                         <el-checkbox v-model="form.sort" label="排序节点"></el-checkbox>
-                      </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.scv" label="跳过证书验证"></el-checkbox>
                       </el-row>
                       <el-row>
                         <el-checkbox v-model="form.fdn" label="过滤非法节点"></el-checkbox>
@@ -255,8 +255,8 @@ export default {
         },
         backendOptions: [
             { value: "https://subapi.up.railway.app/sub?" },
-            { value: "https://api.moetools.net/sub/sub?" },
             { value: "https://sub.xeton.dev/sub?" },
+            { value: "https://api.dler.io/sub?" },
             { value: "http://127.0.0.1:25500/sub?" }
         ],
 
@@ -267,17 +267,26 @@ export default {
               {
                 label: "基础规则（推荐）",
                 value:
-                  "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Mini_NoAuto.ini"
+                  "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Mini_NoAuto.ini"
               },
               {
-                label: "增强规则",
+                label: "进阶规则",
                 value:
-                  "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_WithChinaIp_WithGFW.ini"
+                  "https://raw.githubusercontent.com/MoeTools/static/master/config/clash-config.ini"
               },
               {
                 label: "回国",
                 value:
                   "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_BackCN.ini"
+              }
+            ]
+          },
+          {
+            label: "",
+            options: [
+              {
+                label: "如需更详细的规则，请自行上传或引用",
+                value: ""
               }
             ]
           }
@@ -500,7 +509,7 @@ export default {
         message: h(
           "i",
           { style: "color: teal" },
-          "订阅链接生成均为前端实现，无隐私问题。默认提供后端转换服务，若担心隐私问题请自行搭建后端服务。"
+          "注意：本页面仅为链接转换工具，不提供任何服务！订阅链接生成均为前端实现，无隐私问题。默认提供后端转换服务，若担心隐私问题请自行搭建后端服务。"
         )
       });
     },
@@ -523,18 +532,18 @@ export default {
           }
         })
         .then(res => {
-          if (res.data.Code === 1 && res.data.url !== "") {
+          if (res.data.code === 0 && res.data.data.url !== "") {
             this.$message.success(
               "远程配置上传成功，配置链接已复制到剪贴板，有效期三个月望知悉"
             );
 
             // 自动填充至『表单-远程配置』
-            this.form.remoteConfig = res.data.Url;
+            this.form.remoteConfig = res.data.data.url;
             this.$copyText(this.form.remoteConfig);
 
             this.dialogUploadConfigVisible = false;
           } else {
-            this.$message.error("远程配置上传失败：" + res.data.Message);
+            this.$message.error("远程配置上传失败: " + res.data.msg);
           }
         })
         .catch(() => {
