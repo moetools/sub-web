@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/subweb/_redirects"
   },
   {
-    "revision": "adc6a6fa52b5bde01118",
+    "revision": "7f1930c7ee6734108ce2",
     "url": "/subweb/css/app.6a5dab7f.css"
   },
   {
@@ -20,16 +20,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/subweb/fonts/element-icons.732389de.ttf"
   },
   {
-    "revision": "c2c3451bffb02d396af4218e9706ccd1",
+    "revision": "24da05a8de5e50c2fa366354f0228bd4",
     "url": "/subweb/index.html"
   },
   {
-    "revision": "adc6a6fa52b5bde01118",
-    "url": "/subweb/js/app.12a785fe.js"
+    "revision": "7f1930c7ee6734108ce2",
+    "url": "/subweb/js/app.650d0fda.js"
   },
   {
-    "revision": "feca99f6d746c959ab78",
-    "url": "/subweb/js/chunk-652681bc.836202dc.js"
+    "revision": "ce890ebfe297f53cdc53",
+    "url": "/subweb/js/chunk-652681bc.a77edd79.js"
   },
   {
     "revision": "de133d5e8a2bbb7ff973",
