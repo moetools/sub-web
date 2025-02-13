@@ -1,0 +1,135 @@
+@charset "UTF-8";
+/*
+* Pages Mixins
+*/
+
+body {
+  background: #f8f7fa;
+}
+
+.bg-body {
+  background: #f8f7fa !important;
+}
+
+.text-primary {
+  color: #7367f0 !important;
+}
+
+
+.pagination li.active > a:not(.page-link) {
+  border-color: #7367f0;
+  background-color: #7367f0;
+  color: #fff;
+}
+
+.progress-bar {
+  background-color: #7367f0;
+  color: #fff;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #7367f0;
+  border-color: #7367f0;
+}
+.btn-primary:hover {
+  color: #fff !important;
+  background-color: #685dd8 !important;
+  border-color: #685dd8 !important;
+}
+ .btn-primary:focus, .btn-primary.focus {
+  color: #fff;
+  background-color: #685dd8;
+  border-color: #685dd8;
+  box-shadow: none;
+}
+ .btn-primary:active, .btn-primary.active {
+  color: #fff !important;
+  background-color: #685dd8 !important;
+  border-color: #685dd8 !important;
+}
+.btn-primary.disabled, .btn-primary:disabled {
+  color: #fff !important;
+  background-color: #7367f0 !important;
+  border-color: #7367f0 !important;
+  box-shadow: none !important;
+}
+
+.dropdown-item:not(.disabled).active,
+.dropdown-item:not(.disabled):active {
+  background-color: #7367f0;
+  color: #fff !important;
+}
+
+.dropdown-menu > li:not(.disabled) > a:not(.dropdown-item):active,
+.dropdown-menu > li.active:not(.disabled) > a:not(.dropdown-item) {
+  background-color: #7367f0;
+  color: #fff !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #7367f0 !important;
+}
+
+.form-check-input:focus {
+  border-color: #7367f0;
+}
+.form-check-input:checked, .form-check-input[type=checkbox]:indeterminate {
+  background-color: #7367f0;
+  border-color: #7367f0;
+}
+
+.form-control:focus ~ .form-label {
+  border-color: #7367f0;
+}
+.form-control:focus ~ .form-label::after {
+  border-color: inherit;
+}
+
+a {
+  color: #7367f0;
+}
+a:hover {
+  color: #8176f2;
+}
+
+.datepicker table tr td.active, .datepicker table tr td.active.highlighted,
+.datepicker table tr td .focused,
+.datepicker table tr td span.active,
+.datepicker table tr td span.active.disabled {
+  background: #7367f0 !important;
+  color: #fff !important;
+}
+.datepicker table tr td.range, .datepicker table tr td.range.highlighted, .datepicker table tr td.range.today {
+  color: #7367f0 !important;
+  background: #e9e7fd !important;
+}
+.datepicker table tr td.range.focused, .datepicker table tr td.range.highlighted.focused, .datepicker table tr td.range.today.focused {
+  background: #dddbfb !important;
+}
+.datepicker table tr td.range.disabled, .datepicker table tr td.range.highlighted.disabled, .datepicker table tr td.range.today.disabled {
+  background: rgba(233, 231, 253, 0.5) !important;
+  color: rgba(115, 103, 240, 0.5) !important;
+}
+.datepicker table tr td.today:not(.active) {
+  box-shadow: 0 0 0 1px #7367f0 inset;
+}
+
+.ranges li.active {
+  color: #fff !important;
+  background-color: #7367f0 !important;
+}
+
+.navbar.landing-navbar .navbar-nav .show > .nav-link,
+.navbar.landing-navbar .navbar-nav .active > .nav-link,
+.navbar.landing-navbar .navbar-nav .nav-link.show,
+.navbar.landing-navbar .navbar-nav .nav-link.active,
+.navbar.landing-navbar .navbar-nav .nav-link:hover {
+  color: #7367f0 !important;
+}
+
+.layout-navbar {
+  box-shadow: 0 0 10px #dbdade;
+  backdrop-filter: saturate(200%) blur(6px);
+}
