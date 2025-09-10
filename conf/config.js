@@ -4,7 +4,7 @@ window.config = {
   // API 地址
   apiUrls: [
     {
-      value: 'https://subapi.fly.dev/sub?',
+      value: 'https://subapi.fly.dev',
       text: '默认'
     },
     {
